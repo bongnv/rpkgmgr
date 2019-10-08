@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+       MYSQL_ROOT_PASSWORD: rpkgmgr
+       MYSQL_DATABASE: rpkgmgr
+       MYSQL_USER: rpkgmgr
+       MYSQL_PASSWORD: rpkgmgr
+    ports:
+      - "3307:3306"
+    expose:
+      - "3307"
+
+  go:
+    depends_on:
+      - db
+    build: .
+    environment:
+      GORM_URL: "rpkgmgr:rpkgmgr@(db)/rpkgmgr"
+
+  migrate:
+    image: migrate/migrate
+    depends_on:
+      - db
+    volumes:
+      - ./migrations:/migrations
+    command: -path /migrations -database mysql://rpkgmgr:rpkgmgr@tcp(db)/rpkgmgr up
+
+volumes:
+  db_data: {}
