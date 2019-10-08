@@ -17,9 +17,6 @@ const (
 
 	packagePrefix = "Package:"
 	versionPrefix = "Version:"
-	dependPrefix  = "Depends:"
-	suggestPrefix = "Suggests:"
-	licensePrefix = "License:"
 )
 
 var (
@@ -40,12 +37,14 @@ func NewIndexer(url string, descIndexer DescriptionIndexer, repo repository.Repo
 	}
 }
 
+// Indexer indexes R packages from a repo and store thems into a database.
 type Indexer struct {
 	url         string
 	descIndexer DescriptionIndexer
 	repo        repository.Repository
 }
 
+// Run implements cron.Job interface.
 func (i *Indexer) Run() {
 	pkgs, err := i.downloadAndParsePackages()
 	if err != nil {
