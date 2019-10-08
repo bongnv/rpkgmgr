@@ -1,6 +1,6 @@
 # rpkgmgr
 
-`rpkgmgr` helps to index R packages from online sources.
+`rpkgmgr` helps to index R packages from online sources. It parses PACKAGES in each repository then parse DESCRIPTION in each package to populate details into a database.
 
 ## How to use
 
